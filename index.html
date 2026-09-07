@@ -11,8 +11,10 @@
 @media(max-width:600px){.joy{width:170px;height:170px;bottom:18px;left:14px}.knob{width:70px;height:70px;margin:-35px}.pill{top:10px;font-size:12px;padding:9px 12px}.tip{top:56px}.title{left:10px}.time{right:10px}}
 </style>
 </head>
-<body>
-<div id="game"></div><div id="loading" style="position:fixed;inset:0;display:grid;place-items:center;background:#07100b;color:#fff;font:600 14px system-ui;letter-spacing:.08em;z-index:20;pointer-events:none;transition:opacity .25s">LOADING FOREST…</div>
+<body><div id="fatalError" style="display:none;position:fixed;inset:0;z-index:9999;place-items:center;padding:24px;background:#07100b;color:#fff;font:600 14px system-ui;text-align:center"></div>
+<script>window.addEventListener('error',e=>{const b=document.getElementById('fatalError');if(b){b.style.display='grid';b.innerHTML='FOREST EXPLORER ERROR<br><small style="font-weight:400">'+String(e.message||'Unknown error')+'</small>'}});window.addEventListener('unhandledrejection',e=>{const b=document.getElementById('fatalError');if(b){b.style.display='grid';b.innerHTML='FOREST EXPLORER ERROR<br><small style="font-weight:400">'+String(e.reason||'Unknown error')+'</small>'}});</script>
+
+<div id="game"></div>
 <div class="hud"><div class="pill title">🌲 FOREST EXPLORER</div><div class="pill time" id="time">☀️ DAYLIGHT</div><div class="pill tip">SWIPE TO LOOK • JOYSTICK TO WALK</div><div class="cross"></div></div>
 <div class="controls"><div class="joy" id="joy"><div class="knob" id="knob"></div></div></div>
 <div class="vignette"></div><div class="grain"></div><div class="flash" id="flash"></div>
@@ -58,23 +60,11 @@ const h=(elapsed*.012)%1,daylight=.5+.5*Math.sin(h*Math.PI*2-Math.PI/2),sunY=Mat
 sun.intensity=1.3+3.4*sunY;hemi.intensity=1+.7*sunY;renderer.toneMappingExposure=.88+.35*sunY;
 const night=daylight<.22;timeEl.textContent=night?'🌙 NIGHT':daylight<.5?'🌤️ EVENING':'☀️ DAYLIGHT';scene.fog.density=night?.0065:.0105
 }
-let firstFrame=true;
-function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.05);elapsed+=dt;update(dt);renderer.render(scene,camera);if(firstFrame){firstFrame=false;const loading=document.getElementById('loading');loading.style.opacity='0';setTimeout(()=>loading.remove(),300)}}
+
+function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.05);elapsed+=dt;update(dt);renderer.render(scene,camera);}
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
 animate();
 })();
-</script>
-<script>
-window.addEventListener('error',e=>{
- const box=document.getElementById('loading');
- if(!box)return;
- box.style.pointerEvents='auto';box.style.opacity='1';box.style.zIndex='999';box.innerHTML='FOREST EXPLORER ERROR<br><small style="font-weight:400;letter-spacing:0">'+String(e.message||'Unknown error')+'</small>';
-});
-window.addEventListener('unhandledrejection',e=>{
- const box=document.getElementById('loading');
- if(!box)return;
- box.style.pointerEvents='auto';box.style.opacity='1';box.style.zIndex='999';box.innerHTML='FOREST EXPLORER ERROR<br><small style="font-weight:400;letter-spacing:0">'+String(e.reason||'Unknown error')+'</small>';
-});
 </script>
 </body>
 </html>
