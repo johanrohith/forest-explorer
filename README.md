@@ -42,21 +42,19 @@
 
 ```text
 forest-explorer/
-├── index.html                    # Page structure and game interface
-├── style.css                     # HUD, menus, overlays, and touch controls
+├── index.html                     # Page structure and game interface
+├── style.css                      # HUD, menus, overlays, and touch controls
 ├── assets/
 │   └── forest-explorer-banner.svg # Project banner
 ├── js/
-│   ├── main.js                   # Renderer, player, input, HUD, game loop
-│   ├── world.js                  # Terrain, vegetation, props, collisions
-│   ├── env.js                    # Sky, lighting, fog, day/night cycle
-│   ├── audio.js                  # Ambient audio and footsteps
-│   └── util.js                   # Shared math, geometry, noise, and wind helpers
-├── vendor/
-│   ├── three.min.js              # Three.js r160 runtime
-│   └── THREE-LICENSE.txt         # Third-party license
-└── backup/
-    └── index.original.html       # Preserved original single-file version
+│   ├── main.js                    # Renderer, player, input, HUD, game loop
+│   ├── world.js                   # Terrain, vegetation, props, collisions
+│   ├── env.js                     # Sky, lighting, fog, day/night cycle
+│   ├── audio.js                   # Ambient audio and footsteps
+│   └── util.js                    # Shared math, geometry, noise, and wind helpers
+└── vendor/
+    ├── three.min.js               # Three.js r160 runtime
+    └── THREE-LICENSE.txt          # Third-party license
 ```
 
 ## Compatibility
