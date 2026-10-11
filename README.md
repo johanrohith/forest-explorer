@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <strong>A quiet, first-person journey through a living low-poly forest.</strong><br>
+  <strong>A quiet, first-person journey through a living forest.</strong><br>
   Wander winding trails, watch the light change, listen to the forest, and record discoveries along the way.
 </p>
 
