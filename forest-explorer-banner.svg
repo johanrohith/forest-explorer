@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="title desc">
+  <title id="title">Forest Explorer</title>
+  <desc id="desc">A stylized twilight forest with layered evergreen silhouettes, a winding trail, mist, and a glowing campfire.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0.9" y2="1">
+      <stop offset="0" stop-color="#081b1a"/>
+      <stop offset="0.52" stop-color="#12382c"/>
+      <stop offset="1" stop-color="#244a37"/>
+    </linearGradient>
+    <linearGradient id="mist" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b9d8bc" stop-opacity="0"/>
+      <stop offset="0.55" stop-color="#b9d8bc" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#b9d8bc" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="trail" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8b9a6c" stop-opacity="0.65"/>
+      <stop offset="1" stop-color="#c2a778" stop-opacity="0.12"/>
+    </linearGradient>
+    <radialGradient id="fireGlow">
+      <stop offset="0" stop-color="#ffda86" stop-opacity="0.68"/>
+      <stop offset="0.45" stop-color="#f28e43" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#f28e43" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="titleFade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f2f5e9"/>
+      <stop offset="1" stop-color="#c9e5be"/>
+    </linearGradient>
+    <g id="pine">
+      <path d="M0 0 L-38 52 L-18 52 L-48 92 L-23 92 L-60 139 L60 139 L23 92 L48 92 L18 52 L38 52 Z" fill="currentColor"/>
+      <path d="M-4 131 H4 V166 H-4 Z" fill="#593d2c"/>
+    </g>
+    <g id="pineSlim">
+      <path d="M0 0 L-25 42 L-12 42 L-35 79 L-17 79 L-43 116 L43 116 L17 79 L35 79 L12 42 L25 42 Z" fill="currentColor"/>
+      <path d="M-3 109 H3 V140 H-3 Z" fill="#4b3828"/>
+    </g>
+  </defs>
+  <rect width="1200" height="420" rx="24" fill="url(#sky)"/>
+  <circle cx="914" cy="92" r="49" fill="#d3e7ca" opacity="0.1"/>
+  <circle cx="914" cy="92" r="33" fill="#dcebd3" opacity="0.62"/>
+  <g fill="#dcebd3" opacity="0.65">
+    <circle cx="780" cy="58" r="1.6"/><circle cx="1014" cy="52" r="1.4"/><circle cx="1090" cy="105" r="1.7"/><circle cx="700" cy="104" r="1.2"/><circle cx="844" cy="145" r="1.2"/><circle cx="1056" cy="157" r="1.1"/>
+  </g>
+  <path d="M0 240 C140 210 224 243 351 219 S603 240 742 206 S1004 230 1200 191 V420 H0 Z" fill="#214637" opacity="0.76"/>
+  <path d="M0 281 C152 244 270 281 410 252 S667 280 825 239 S1076 264 1200 235 V420 H0 Z" fill="#193b2d"/>
+  <rect x="0" y="236" width="1200" height="120" fill="url(#mist)"/>
+  <path d="M630 420 C670 373 688 341 720 321 C757 297 805 289 842 267 C877 246 896 226 925 204 L1020 204 C979 245 958 275 917 300 C875 326 822 343 797 374 C786 389 779 405 777 420 Z" fill="url(#trail)" opacity="0.8"/>
+  <g opacity="0.98">
+    <use href="#pine" x="35" y="119" transform="translate(35 119) scale(1.23) translate(-35 -119)" color="#0c2a20"/>
+    <use href="#pine" x="0" y="187" transform="translate(0 187) scale(1.2) translate(0 -187)" color="#102e23"/>
+    <use href="#pineSlim" x="130" y="162" transform="translate(130 162) scale(1.04) translate(-130 -162)" color="#13392a"/>
+    <use href="#pine" x="222" y="195" transform="translate(222 195) scale(0.94) translate(-222 -195)" color="#153d2d"/>
+    <use href="#pineSlim" x="321" y="205" transform="translate(321 205) scale(0.88) translate(-321 -205)" color="#1a4532"/>
+    <use href="#pine" x="1110" y="111" transform="translate(1110 111) scale(1.35) translate(-1110 -111)" color="#0c281f"/>
+    <use href="#pine" x="1190" y="180" transform="translate(1190 180) scale(1.15) translate(-1190 -180)" color="#102f23"/>
+    <use href="#pineSlim" x="1053" y="168" transform="translate(1053 168) scale(1.1) translate(-1053 -168)" color="#143a29"/>
+    <use href="#pine" x="995" y="213" transform="translate(995 213) scale(0.88) translate(-995 -213)" color="#173e2e"/>
+    <use href="#pineSlim" x="883" y="219" transform="translate(883 219) scale(0.83) translate(-883 -219)" color="#1b4933"/>
+  </g>
+  <ellipse cx="823" cy="350" rx="140" ry="65" fill="url(#fireGlow)"/>
+  <g transform="translate(824 333)">
+    <path d="M-20 12 L19 -8 M-19 -7 L19 13" stroke="#4e3829" stroke-width="8" stroke-linecap="round"/>
+    <path d="M0 4 C-19 -10 -7 -24 -3 -32 C7 -21 17 -14 8 2 C18 -7 22 -16 21 -22 C42 0 17 20 0 14 C-18 19 -33 3 -18 -12 C-17 -2 -10 4 0 4 Z" fill="#f18a3c"/>
+    <path d="M1 8 C-10 -2 -2 -14 2 -18 C6 -8 14 -5 8 5 C16 0 16 -3 16 -6 C26 9 10 18 1 14 C-7 15 -12 8 -6 2 C-5 7 -2 8 1 8 Z" fill="#ffcf73"/>
+  </g>
+  <g opacity="0.22" stroke="#d4e7c8" stroke-width="1">
+    <path d="M60 300 H430"/><path d="M95 314 H360"/><path d="M882 286 H1110"/>
+  </g>
+  <g transform="translate(72 70)">
+    <rect x="0" y="0" width="5" height="180" rx="2.5" fill="#8cd39b"/>
+    <text x="28" y="24" fill="#a9dcb1" font-family="system-ui,-apple-system,Segoe UI,sans-serif" font-size="13" font-weight="700" letter-spacing="4">A FIRST-PERSON EXPLORATION GAME</text>
+    <text x="24" y="91" fill="url(#titleFade)" font-family="system-ui,-apple-system,Segoe UI,sans-serif" font-size="57" font-weight="800" letter-spacing="1.2">FOREST</text>
+    <text x="24" y="151" fill="url(#titleFade)" font-family="system-ui,-apple-system,Segoe UI,sans-serif" font-size="57" font-weight="800" letter-spacing="1.2">EXPLORER</text>
+    <text x="27" y="185" fill="#c5d8c3" font-family="system-ui,-apple-system,Segoe UI,sans-serif" font-size="17" font-weight="500" letter-spacing="0.25">Follow the trail. Find what the forest hides.</text>
+  </g>
+  <path d="M24 393 H1176" stroke="#d5e8ce" stroke-opacity="0.13"/>
+  <text x="36" y="407" fill="#9db8a0" font-family="system-ui,-apple-system,Segoe UI,sans-serif" font-size="10" letter-spacing="2.2">WANDER  ·  DISCOVER  ·  REMEMBER</text>
+</svg>
