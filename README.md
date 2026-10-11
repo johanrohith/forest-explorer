@@ -17,8 +17,6 @@
 
 **Forest Explorer** is a browser-based 3D exploration experience built around atmosphere, gentle movement, and environmental discovery. Its stylized forest features winding dirt paths, layered vegetation, a quiet pond, standing stones, and a campfire clearing. A changing sky and day–night cycle give familiar locations a different mood as the journey unfolds.
 
-The project is delivered as a static web application. The Three.js runtime is bundled locally, so the game does not need a CDN, package installation, or build step to load its engine.
-
 ## Features
 
 - **Procedural forest environment** — varied trees, ground cover, ferns, flowers, mushrooms, rocks, fallen logs, paths, and terrain.
