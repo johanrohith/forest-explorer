@@ -38,24 +38,6 @@
 | Open field journal | `J` or journal button | Journal button |
 | Pause / resume | `Esc` or pause button | Pause button |
 
-## Run locally
-
-Forest Explorer is a static web project and has no build step.
-
-1. Download or clone the repository.
-2. Serve the project directory with any static HTTP server.
-3. Open the local address in a modern browser with WebGL enabled.
-
-For example, with Python installed:
-
-```bash
-python3 -m http.server 8000
-```
-
-Then open <http://localhost:8000>.
-
-Using a local server is the most reliable way to run the multi-file version because some browsers restrict JavaScript and stylesheet loading from `file://` URLs.
-
 ## Project structure
 
 ```text
