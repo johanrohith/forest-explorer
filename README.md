@@ -57,16 +57,4 @@ forest-explorer/
     └── THREE-LICENSE.txt          # Third-party license
 ```
 
-## Compatibility
-
-A modern browser with WebGL support is required. Desktop keyboard/mouse controls and mobile touch controls are provided; actual frame rate and audio behavior depend on the device and browser. On mobile, sound may begin only after the first user interaction due to browser autoplay policies.
-
-The project can be hosted as a static site on services such as GitHub Pages or any compatible static web host. Keep the relative file structure intact when deploying.
-
-## Third-party software
-
-The project bundles **Three.js r160**, distributed under the MIT License. See [`vendor/THREE-LICENSE.txt`](vendor/THREE-LICENSE.txt) for its license text.
-
----
-
 <p align="center"><sub>Forest Explorer · A small world made for taking the longer way around.</sub></p>
