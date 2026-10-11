@@ -154,23 +154,38 @@
       }, 70 + Math.random() * 260);
     }
 
-    function footstep(run, onPath) {
+    function footstep(run, surface) {
       if (!ctx || ctx.state !== "running" || muted) return;
+      const profiles = {
+        path:   { freq: 1450, q: 1.05, gain: 0.115, dur: 0.085, thud: 0.10 },
+        grass:  { freq: 820,  q: 0.72, gain: 0.075, dur: 0.145, thud: 0.075 },
+        shore:  { freq: 1050, q: 0.8,  gain: 0.085, dur: 0.16, thud: 0.07 },
+        forest: { freq: 980,  q: 0.82, gain: 0.095, dur: 0.13, thud: 0.085 }
+      };
+      const profile = profiles[surface] || profiles.forest;
       const t = ctx.currentTime;
+      const variation = 0.86 + Math.random() * 0.28;
       const s = ctx.createBufferSource(); s.buffer = noiseBuf;
-      const f = ctx.createBiquadFilter(); f.type = "bandpass"; f.frequency.value = (onPath ? 1700 : 650) * (0.85 + Math.random() * 0.3); f.Q.value = 0.9;
+      const f = ctx.createBiquadFilter(); f.type = "bandpass";
+      f.frequency.value = profile.freq * (0.92 + Math.random() * 0.16); f.Q.value = profile.q;
+      const low = ctx.createBiquadFilter(); low.type = "lowpass"; low.frequency.value = run ? 2300 : 1850;
       const g = ctx.createGain();
-      const v = (run ? 0.34 : 0.22) * (0.8 + Math.random() * 0.4);
-      const dur = onPath ? 0.09 : 0.14;
+      const v = profile.gain * variation * (run ? 1.24 : 1.0);
+      const dur = profile.dur * (run ? 0.88 : 1.0);
       g.gain.setValueAtTime(0.0001, t);
-      g.gain.exponentialRampToValueAtTime(v, t + 0.012);
+      g.gain.exponentialRampToValueAtTime(v, t + 0.018);
       g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-      chain(s, f, g, master);
-      s.start(t, Math.random() * 2, dur + 0.05);
-      // soft thud
-      const o = ctx.createOscillator(); o.type = "sine"; o.frequency.setValueAtTime(95, t); o.frequency.exponentialRampToValueAtTime(48, t + 0.1);
-      const og = ctx.createGain(); og.gain.setValueAtTime(0.0001, t); og.gain.exponentialRampToValueAtTime(v * 0.45, t + 0.01); og.gain.exponentialRampToValueAtTime(0.0001, t + 0.12);
-      chain(o, og, master); o.start(t); o.stop(t + 0.14);
+      chain(s, f, low, g, master);
+      s.start(t, Math.random() * 2, dur + 0.03);
+      // A restrained low-frequency weight gives footsteps presence without a loud repeated thump.
+      const o = ctx.createOscillator(); o.type = "sine";
+      o.frequency.setValueAtTime((run ? 82 : 72) * variation, t);
+      o.frequency.exponentialRampToValueAtTime(42, t + 0.095);
+      const og = ctx.createGain();
+      og.gain.setValueAtTime(0.0001, t);
+      og.gain.exponentialRampToValueAtTime(profile.thud * (run ? 1.15 : 0.8) * variation, t + 0.016);
+      og.gain.exponentialRampToValueAtTime(0.0001, t + 0.11);
+      chain(o, og, master); o.start(t); o.stop(t + 0.12);
     }
 
     function update(s) {

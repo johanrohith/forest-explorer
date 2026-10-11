@@ -45,7 +45,7 @@
 
       float sd = max(dot(d, uSunDir), 0.0);
       col += uSunCol * (pow(sd, 6.0) * 0.22 + pow(sd, 48.0) * 0.45);
-      col += uSunCol * 3.0 * smoothstep(0.99935, 0.99975, sd);
+      col += uSunCol * 1.75 * smoothstep(0.99925, 0.99975, sd);
 
       float md = max(dot(d, uMoonDir), 0.0);
       col += vec3(0.75, 0.82, 1.0) * (smoothstep(0.9991, 0.9995, md) * 1.6 + pow(md, 40.0) * 0.10) * uNight;
@@ -158,22 +158,22 @@
       cc.setRGB(1, 1, 1).lerp(tmpA.setHex(0xffb98a), state.twi * 0.8).lerp(tmpB.setHex(0x1a2640), state.night);
 
       // lights
-      const sunI = 3.4 * smoothstep(-0.03, 0.3, s);
+      const sunI = 2.7 * smoothstep(-0.03, 0.3, s);
       sun.intensity = sunI;
       sun.color.copy(sunCol);
       moon.intensity = 0.75 * (1 - smoothstep(-0.28, 0.02, s));
       hemi.color.setHex(0xbfdcf0).lerp(tmpA.setHex(0xd7a58b), state.twi).lerp(tmpB.setHex(0x2a4278), state.night);
       hemi.groundColor.setHex(0x3a4a2a).lerp(tmpA.setHex(0x3a2a22), state.twi).lerp(tmpB.setHex(0x0e1620), state.night);
-      hemi.intensity = lerp(0.62, 1.45, state.day) * (1 - state.night) + 0.55 * state.night + 0.2 * state.twi;
+      hemi.intensity = lerp(0.78, 1.55, state.day) * (1 - state.night) + 0.58 * state.night + 0.24 * state.twi;
 
       // fog matches the horizon so the world fades seamlessly into the sky
       scene.fog.color.copy(hor.c);
-      scene.fog.density = 0.0095 * state.day + 0.0125 * state.twi + 0.0135 * state.night;
+      scene.fog.density = 0.012 * state.day + 0.015 * state.twi + 0.0145 * state.night;
 
       // hand lights follow the world's lighting
-      handHemi.intensity = 0.35 + 1.0 * state.day + 0.25 * state.twi;
-      handHemi.color.copy(hemi.color).lerp(tmpB.setHex(0xffffff), 0.35);
-      handSun.intensity = 0.1 + 2.0 * smoothstep(-0.03, 0.3, s);
+      handHemi.intensity = 0.72 + 0.92 * state.day + 0.22 * state.twi + 0.18 * state.night;
+      handHemi.color.copy(hemi.color).lerp(tmpB.setHex(0xffffff), 0.52);
+      handSun.intensity = 0.32 + 1.35 * smoothstep(-0.03, 0.3, s);
       handSun.color.copy(sunCol);
 
       // clock label

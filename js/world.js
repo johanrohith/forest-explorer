@@ -721,7 +721,7 @@
       if (pathDist(x, z) < 1.8 || Math.hypot(x - POND.x, z - POND.z) < POND_EDGE + 1.2 || Math.hypot(x - CAMP.x, z - CAMP.z) < 4.5) continue;
       const sc = 0.7 + rng() * 0.9;
       bushItems.push({ x, y: terrainHeight(x, z) - 0.05, z, s: sc, sy: sc * (0.8 + rng() * 0.4), ry: rng() * 6.28, color: [0xffffff, 0xeaf6e0, 0xf6f0d8][Math.floor(rng() * 3)] });
-      if (sc > 1.0 && Math.hypot(x, z) < PLAY_RADIUS) addCollider(x, z, 0.5 * sc);
+      if (sc > 1.0 && Math.hypot(x, z) < PLAY_RADIUS) addCollider(x, z, 0.22 * sc);
       i++;
     }
     world.bushChunks = buildChunks(root, bushGeo, bushMat, bushItems, 40, { cast: true });
@@ -765,7 +765,7 @@
       const k = Math.floor(rng() * 3);
       const sx = sc * (0.9 + rng() * 0.5), sz = sc * (0.9 + rng() * 0.5), sy = sc * (0.55 + rng() * 0.4);
       rockItems[k].push({ x, y: terrainHeight(x, z) - sy * 0.3, z, sx, sy, sz, ry: rng() * 6.28, rx: (rng() - 0.5) * 0.3, rz: (rng() - 0.5) * 0.3 });
-      if (collide && Math.hypot(x, z) < PLAY_RADIUS + 2) addCollider(x, z, Math.max(sx, sz) * 0.82);
+      if (collide && Math.hypot(x, z) < PLAY_RADIUS + 2) addCollider(x, z, Math.max(sx, sz) * 0.56);
     }
     for (let i = 0, guard = 0; i < Q.rocks && guard < Q.rocks * 10; guard++) {
       let x, z;

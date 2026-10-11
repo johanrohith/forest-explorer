@@ -15,7 +15,7 @@
   }
 
   if (!window.THREE || !FE.buildWorld) {
-    fatal("Three.js could not load.<br>Check that the <code>vendor/three.min.js</code> file is present next to index.html, then reload.");
+    fatal("The 3D engine could not initialize. Try reloading in a browser with WebGL support.");
     return;
   }
   const T = window.THREE;
@@ -147,9 +147,9 @@
     thumbBase.add(t1, tj);
 
     // pose the whole arm: coming from the lower right, angled in and away from the camera
-    arm.rotation.set(-1.05, 0.0, 0.32);
+    arm.rotation.set(-0.96, 0.0, 0.38);
     arm.position.set(0, 0, 0);
-    palm.rotation.set(0, -0.35, 0);
+    palm.rotation.set(0.08, -0.48, 0.10);
 
     handScene.add(root);
     return { root, arm, palm, fingers };
@@ -159,13 +159,14 @@
     const aspect = mount.clientWidth / Math.max(1, mount.clientHeight);
     handCam.aspect = aspect;
     handCam.updateProjectionMatrix();
-    const dist = 0.55;
+    // Keep the viewmodel farther from the camera and notably smaller on portrait phones.
+    const dist = aspect < 0.82 ? 0.72 : aspect < 1.15 ? 0.66 : 0.62;
     const halfH = Math.tan(handCam.fov * Math.PI / 360) * dist;
     const halfW = halfH * aspect;
-    const s = clamp(0.6 + 0.4 * Math.min(1, aspect / 1.4), 0.62, 1);
+    const s = aspect < 0.82 ? 0.56 : aspect < 1.15 ? 0.67 : 0.80;
     hand.root.scale.setScalar(s);
-    hand.baseX = Math.min(halfW * 0.62, 0.30);
-    hand.baseY = -halfH * 0.95;
+    hand.baseX = Math.min(halfW * 0.80, 0.30);
+    hand.baseY = -halfH * (aspect < 0.82 ? 1.16 : 1.04);
     hand.baseZ = -dist;
   }
 
@@ -259,6 +260,8 @@
     if (e.repeat) { if (state === "playing" && /Arrow|Space/.test(e.code)) e.preventDefault(); return; }
     if (e.code === "Escape" || e.code === "KeyP") { if (state === "playing") pause(); else if (state === "paused") resume(); return; }
     if (e.code === "KeyM") { toggleSound(); return; }
+    if (e.code === "KeyE" && state === "playing") { examineNearby(); return; }
+    if (e.code === "KeyJ" && state === "playing") { openJournal(); return; }
     if (e.code === "Enter" && state === "start" && !$("btnEnter").disabled) { startGame(); return; }
     setKey(e.code, true);
     if (/^Arrow|^Space$/.test(e.code)) e.preventDefault();
@@ -302,6 +305,94 @@
 
   /* ---------------- UI state ---------------- */
   const startEl = $("start"), menuEl = $("menu");
+  const journalEl = $("journalOverlay");
+  const discoveries = [
+    { id: "ember", icon: "🔥", title: "The First Ember", place: "Campfire", radius: 6.6,
+      position: (w) => w.CAMP,
+      text: "The fire turns the clearing into a shelter. Someone arranged the logs carefully and left room for others to sit. A reminder that a long walk is easier when there is somewhere warm to return to." },
+    { id: "stillwater", icon: "💧", title: "Stillwater Pool", place: "Pond", radius: (w) => w.POND_EDGE + 2.2,
+      position: (w) => w.POND,
+      text: "The pond mirrors the shifting sky. Reeds shelter its rim and lily pads drift near the quieter water. The safest path follows the bank rather than crossing the dark centre." },
+    { id: "whisperstones", icon: "🪨", title: "Whispering Stones", place: "Standing stones", radius: (w) => w.STONES.R + 2.3,
+      position: (w) => w.STONES,
+      text: "Seven weathered stones form a loose circle. Moss softens their edges, but the arrangement looks deliberate. There are no names, dates, or instructions—only the feeling that this place was meant to be remembered." },
+    { id: "waystone", icon: "✨", title: "The Ranger's Waystone", place: "Old trail marker", radius: 4.7,
+      position: () => ({ x: 31, z: -54 }),
+      text: "A small green crystal sits in an old stone marker beside the trail. Its glow is faint in daylight and clearer at dusk. It marks the path deeper into the woods, though the ranger who placed it is long gone." }
+  ];
+  const foundNotes = new Set();
+  let nearbyNote = null, journalReturnState = "playing", toastTimer = null;
+  try {
+    const saved = JSON.parse(localStorage.getItem("forestExplorer.fieldNotes.v1") || "[]");
+    if (Array.isArray(saved)) saved.forEach((id) => { if (discoveries.some((d) => d.id === id)) foundNotes.add(id); });
+  } catch (_) {}
+
+  function renderJournal() {
+    const count = foundNotes.size;
+    $("journalCount").textContent = count + "/" + discoveries.length;
+    $("journalProgress").textContent = count === discoveries.length
+      ? "Expedition complete — every field note found."
+      : count + " of " + discoveries.length + " field notes discovered";
+    $("journalBarFill").style.width = (count / discoveries.length * 100) + "%";
+    $("journalBody").innerHTML = discoveries.map((d) => {
+      const found = foundNotes.has(d.id);
+      return '<article class="note ' + (found ? 'found' : 'locked') + '">' +
+        '<div class="noteIcon">' + (found ? d.icon : '◌') + '</div><div class="noteText">' +
+        '<strong>' + (found ? d.title : 'Undiscovered location') + '</strong>' +
+        '<span>' + (found ? d.text : 'Follow the trails and examine places that feel different from the rest of the forest.') + '</span></div>' +
+        '<div class="noteState">' + (found ? 'FOUND' : '???') + '</div></article>';
+    }).join("");
+  }
+  function showToast(message) {
+    const el = $("toast");
+    el.textContent = message; el.classList.add("show");
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove("show"), 3000);
+  }
+  function updateInteraction() {
+    const prompt = $("interactPrompt");
+    if (state !== "playing" || !world) { prompt.classList.add("hidden"); nearbyNote = null; return; }
+    let best = null, bestD = Infinity;
+    discoveries.forEach((d) => {
+      if (foundNotes.has(d.id)) return;
+      const pos = d.position(world);
+      const dx = player.x - pos.x, dz = player.z - pos.z;
+      const distance = Math.hypot(dx, dz);
+      const radius = typeof d.radius === "function" ? d.radius(world) : d.radius;
+      if (distance <= radius && distance < bestD) { best = d; bestD = distance; }
+    });
+    nearbyNote = best;
+    if (best) {
+      $("interactName").textContent = best.icon + "  " + best.place;
+      $("btnInteract").textContent = document.documentElement.classList.contains("touch") ? "EXAMINE" : "EXAMINE · E";
+      prompt.classList.remove("hidden");
+    } else prompt.classList.add("hidden");
+  }
+  function examineNearby() {
+    if (state !== "playing" || !nearbyNote) return;
+    const d = nearbyNote;
+    foundNotes.add(d.id);
+    try { localStorage.setItem("forestExplorer.fieldNotes.v1", JSON.stringify(Array.from(foundNotes))); } catch (_) {}
+    renderJournal(); updateInteraction();
+    showToast(d.icon + "  Field note added: " + d.title);
+    if (foundNotes.size === discoveries.length) showToast("🌲 Expedition complete — all 4 field notes found!");
+  }
+  function openJournal() {
+    if (!world || state === "start" || state === "loading") return;
+    journalReturnState = state;
+    if (state === "playing") { state = "journal"; audio.suspend(); if (document.pointerLockElement) document.exitPointerLock(); }
+    else if (state === "paused") state = "journal";
+    else if (state !== "journal") return;
+    renderJournal(); journalEl.classList.remove("hidden");
+  }
+  function closeJournal() {
+    journalEl.classList.add("hidden");
+    if (journalReturnState === "playing") { state = "playing"; audio.resume(); $("btnPause").textContent = "⏸"; tryLock(); }
+    else { state = "paused"; $("btnPause").textContent = "▶"; }
+  }
+  $("btnJournal").addEventListener("click", openJournal);
+  $("btnInteract").addEventListener("click", examineNearby);
+  $("btnJournalClose").addEventListener("click", closeJournal);
+  ["btnJournal", "btnInteract", "btnJournalClose"].forEach((id) => $(id).addEventListener("pointerdown", (e) => e.stopPropagation()));
   function startGame() {
     if (!world) return;
     audio.start();
@@ -351,7 +442,7 @@
     $("todLabel").textContent = env.state.clock;
   });
   // keep clicks on UI from reaching the canvas
-  ["btnPause", "btnSound"].forEach((id) => $(id).addEventListener("pointerdown", (e) => e.stopPropagation()));
+  ["btnPause", "btnSound", "btnJournal", "btnInteract"].forEach((id) => $(id).addEventListener("pointerdown", (e) => e.stopPropagation()));
 
   /* ---------------- simulation ---------------- */
   const fwd = new T.Vector3(), rgt = new T.Vector3();
@@ -372,7 +463,7 @@
     fwd.set(-Math.sin(player.yaw), 0, -Math.cos(player.yaw));
     rgt.set(Math.cos(player.yaw), 0, -Math.sin(player.yaw));
     const running = input.shift || input.run;
-    const speed = running ? 7.4 : 4.6;
+    const speed = running ? 5.8 : 3.55;
     const tx = (fwd.x * f + rgt.x * s) * speed * (len > 0 ? mag : 0);
     const tz = (fwd.z * f + rgt.z * s) * speed * (len > 0 ? mag : 0);
     const k = 1 - Math.exp(-dt * (len > 0 ? 11 : 14));
@@ -391,13 +482,20 @@
     }
     travelled += moved;
 
-    // footsteps / bob phase
-    player.steps += moved / 0.78;
+    // Stride-based cadence: fewer, softer impacts; animation is tied to actual distance moved.
+    const strideLength = running ? 1.72 : 1.34;
+    player.steps += moved / strideLength;
     const fl = Math.floor(player.steps);
-    if (fl !== lastStepFloor) {
+    if (fl !== lastStepFloor && moved > 0.015) {
       lastStepFloor = fl;
-      player.onPath = world.pathDist(player.x, player.z) < 1.3;
-      audio.footstep(running, player.onPath);
+      const onPath = world.pathDist(player.x, player.z) < 1.45;
+      const pondDistance = Math.hypot(player.x - world.POND.x, player.z - world.POND.z) - world.POND_EDGE;
+      const surface = onPath ? "path" : pondDistance < 2.4 ? "shore" : (world.pathDist(player.x, player.z) < 5.0 ? "forest" : "grass");
+      player.onPath = onPath;
+      audio.footstep(running, surface);
+    } else if (moved < 0.002) {
+      // Prevent residual stride phase from retriggering after a stop or collision.
+      lastStepFloor = Math.floor(player.steps);
     }
 
     // eye height follows the terrain smoothly
@@ -420,8 +518,9 @@
   function updateCamera(dt, t) {
     const speedRatio = clamp(player.speedNow / 6, 0, 1.2);
     bobAmt.v += (speedRatio - bobAmt.v) * (1 - Math.exp(-dt * 8));
-    const bob = -Math.cos(player.steps * Math.PI * 2) * 0.032 * bobAmt.v;
-    const sway = Math.sin(player.steps * Math.PI) * 0.012 * bobAmt.v;
+    const gait = player.steps * Math.PI;
+    const bob = -Math.cos(gait) * 0.014 * bobAmt.v;
+    const sway = Math.sin(gait) * 0.008 * bobAmt.v;
     const breathe = Math.sin(t * 1.3) * 0.004;
     camera.position.set(player.x, player.eyeY + bob + breathe, player.z);
     camera.rotation.set(player.pitch, player.yaw, sway, "YXZ");
@@ -439,11 +538,11 @@
     const decay = Math.exp(-dt * 7);
     lagYaw *= decay; lagPitch *= decay;
     const w = bobAmt.v;
-    const sp = player.steps * Math.PI * 2;
-    const bx = Math.sin(sp * 0.5) * 0.018 * w;
-    const by = (Math.abs(Math.cos(sp * 0.5)) - 0.5) * 0.03 * w + Math.sin(t * 1.3) * 0.004;
-    hand.root.position.set(hand.baseX + bx + lagYaw * 0.18, hand.baseY + by - lagPitch * 0.12, hand.baseZ);
-    hand.root.rotation.set(lagPitch * 0.4, lagYaw * 0.5, Math.sin(sp * 0.5) * 0.04 * w);
+    const sp = player.steps * Math.PI;
+    const bx = Math.sin(sp) * 0.010 * w;
+    const by = (Math.abs(Math.cos(sp)) - 0.5) * 0.016 * w + Math.sin(t * 1.05) * 0.003;
+    hand.root.position.set(hand.baseX + bx + lagYaw * 0.12, hand.baseY + by - lagPitch * 0.08, hand.baseZ);
+    hand.root.rotation.set(lagPitch * 0.28, lagYaw * 0.38, Math.sin(sp * 0.5) * 0.025 * w);
     // fingers breathe a little
     hand.fingers.forEach((fg, i) => fg.joints.forEach((j, k) => { j.rotation.x = fg.curl[k] + Math.sin(t * 1.2 + i * 0.7) * 0.03 + w * 0.05; }));
   }
@@ -480,7 +579,7 @@
       if (settings.auto) { tod = (tod + dt / DAY_SECONDS) % 1; env.setTime(tod); }
     }
 
-    if (state !== "paused") {
+    if (state !== "paused" && state !== "journal") {
       updateCamera(dt, elapsed);
       updateHand(dt, elapsed);
     }
@@ -497,6 +596,9 @@
       });
     }
     updateHud();
+    updateInteraction();
+    if (waystoneCrystal) waystoneCrystal.rotation.y += dt * 0.28;
+    if (waystoneLight) waystoneLight.intensity = 0.45 + 0.12 * Math.sin(elapsed * 1.3);
 
     renderer.clear();
     renderer.render(scene, camera);
@@ -517,6 +619,28 @@
     }
   }
 
+  /* ---------------- small landmark: ranger waystone ---------------- */
+  let waystoneCrystal = null, waystoneLight = null;
+  function createWaystone() {
+    const x = 31, z = -54, y = world.height(x, z);
+    const g = new T.Group(); g.position.set(x, y, z);
+    const stoneMat = new T.MeshStandardMaterial({ color: 0x555f53, roughness: 1, flatShading: true });
+    const mossMat = new T.MeshStandardMaterial({ color: 0x426443, roughness: 1, flatShading: true });
+    const base = new T.Mesh(new T.CylinderGeometry(0.48, 0.62, 0.28, 7), stoneMat);
+    base.position.y = 0.14; base.castShadow = true; base.receiveShadow = true; g.add(base);
+    const rockA = new T.Mesh(new T.DodecahedronGeometry(0.42, 0), mossMat);
+    rockA.position.set(-0.42, 0.20, 0.1); rockA.scale.set(1.0, 0.72, 0.82); rockA.rotation.set(0.2, 0.4, -0.12); rockA.castShadow = true; g.add(rockA);
+    const rockB = new T.Mesh(new T.DodecahedronGeometry(0.34, 0), stoneMat);
+    rockB.position.set(0.42, 0.16, -0.12); rockB.scale.set(0.9, 0.66, 0.95); rockB.rotation.y = 0.8; rockB.castShadow = true; g.add(rockB);
+    const crystalMat = new T.MeshStandardMaterial({ color: 0x8ce6ac, emissive: 0x2b9256, emissiveIntensity: 0.8, roughness: 0.28, metalness: 0.08, flatShading: true });
+    waystoneCrystal = new T.Mesh(new T.OctahedronGeometry(0.29, 0), crystalMat);
+    waystoneCrystal.position.set(0, 0.93, 0); waystoneCrystal.rotation.set(0.18, 0.4, 0.08); waystoneCrystal.castShadow = true; g.add(waystoneCrystal);
+    const collar = new T.Mesh(new T.TorusGeometry(0.31, 0.045, 5, 12), mossMat);
+    collar.position.set(0, 0.66, 0); collar.rotation.x = Math.PI / 2; g.add(collar);
+    waystoneLight = new T.PointLight(0x83e9a7, 0.45, 7, 2); waystoneLight.position.set(0, 1.0, 0); g.add(waystoneLight);
+    scene.add(g);
+  }
+
   /* ---------------- boot ---------------- */
   async function boot() {
     try {
@@ -525,8 +649,10 @@
         $("barFill").style.width = pct + "%";
         $("startSub").textContent = label;
       });
+      createWaystone();
       resetPlayer();
       player.yaw = 0;
+      renderJournal();
       onResize();
       state = "start";
       $("startSub").textContent = "A quiet walk through a living forest.";
