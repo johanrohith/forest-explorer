@@ -26,7 +26,6 @@
 - **Field journal** — discover and record four locations: the campfire, pond, standing stones, and a ranger waystone.
 - **Quick-access settings** — pause and resume, restart, sound controls, time-of-day controls, and shadow settings.
 - **Mobile-aware rendering** — quality settings adapt to device characteristics, with a manual quality option available through the URL.
-- **Self-contained dependencies** — Three.js r160 is included in `vendor/`; no external game assets are fetched at runtime.
 
 ## Controls
 
