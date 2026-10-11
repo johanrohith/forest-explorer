@@ -7,92 +7,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23102218'/%3E%3Cpath d='M32 8 14 34h9L12 50h40L41 34h9z' fill='%2354b26a'/%3E%3Crect x='29' y='50' width='6' height='8' fill='%236b4429'/%3E%3C/svg%3E">
 <meta name="description" content="Forest Explorer - a first-person walk through a living 3D forest.">
 <title>Forest Explorer</title>
-<style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07120b;color:#fff;
-  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;overscroll-behavior:none}
-body{touch-action:none}
-#game{position:fixed;inset:0}
-canvas{display:block;width:100%;height:100%;touch-action:none;outline:none}
-.vignette{position:fixed;inset:0;pointer-events:none;
-  background:radial-gradient(ellipse at 50% 50%,transparent 58%,rgba(0,8,3,.38) 100%)}
-
-/* ---------- HUD ---------- */
-.hud{position:fixed;inset:0;pointer-events:none;text-shadow:0 2px 7px #000}
-.top{position:absolute;display:flex;align-items:center;gap:8px;
-  left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));
-  top:max(12px,env(safe-area-inset-top))}
-.grow{flex:1}
-.pill{padding:10px 14px;border:1px solid #ffffff28;border-radius:999px;background:#102218bb;
-  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  font-weight:700;letter-spacing:.06em;font-size:13px;white-space:nowrap}
-.btn{pointer-events:auto;width:42px;height:42px;border-radius:50%;border:1px solid #ffffff30;
-  background:#102218cc;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  color:#fff;font-size:17px;line-height:1;display:grid;place-items:center;cursor:pointer;padding:0}
-.btn:active{transform:scale(.94);background:#1d3b29d9}
-.tip{position:absolute;left:50%;top:calc(max(12px,env(safe-area-inset-top)) + 54px);transform:translateX(-50%);
-  font-size:12px;font-weight:600;letter-spacing:.03em;transition:opacity 1.2s}
-.tip.fade{opacity:0}
-.cross{position:absolute;left:50%;top:50%;width:5px;height:5px;margin:-2.5px;border-radius:50%;
-  background:#fff;opacity:.65;box-shadow:0 0 8px #fff8}
-
-/* ---------- touch controls ---------- */
-.controls{position:fixed;inset:0;pointer-events:none;display:none}
-.touch .controls{display:block}
-.joy{position:absolute;left:calc(18px + env(safe-area-inset-left));bottom:calc(18px + env(safe-area-inset-bottom));
-  width:158px;height:158px;border-radius:50%;border:1px solid #ffffff35;background:#ffffff0c;
-  box-shadow:inset 0 0 25px #0003;pointer-events:auto;touch-action:none}
-.joy:after{content:"";position:absolute;inset:25px;border:1px solid #ffffff18;border-radius:50%;pointer-events:none}
-.knob{position:absolute;left:50%;top:50%;width:66px;height:66px;margin:-33px;border-radius:50%;
-  background:radial-gradient(circle at 35% 30%,#ffffff55,#ffffff18 52%,#00000025);
-  border:1px solid #ffffff45;box-shadow:0 7px 20px #0006;transform:translate3d(0,0,0)}
-.run{position:absolute;right:calc(22px + env(safe-area-inset-right));bottom:calc(40px + env(safe-area-inset-bottom));
-  width:78px;height:78px;border-radius:50%;border:1px solid #ffffff38;background:#ffffff10;color:#fff;
-  font-weight:800;font-size:12px;letter-spacing:.08em;pointer-events:auto;touch-action:none;
-  display:grid;place-items:center;text-shadow:0 2px 6px #000}
-.run.on{background:#7fd18a55;border-color:#bff0c4}
-.help{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);padding:8px 14px;border-radius:10px;
-  background:#07120bcc;border:1px solid #ffffff20;font-size:11px;letter-spacing:.04em;opacity:.8;white-space:nowrap}
-.touch .help{display:none}
-.only-touch{display:none}
-.touch .only-touch{display:block}
-.touch .only-desk{display:none}
-
-/* ---------- overlays ---------- */
-.overlay{position:fixed;inset:0;display:grid;place-items:center;z-index:10;padding:16px;
-  background:radial-gradient(ellipse at 50% 40%,rgba(6,20,12,.50),rgba(2,8,4,.82));
-  backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);text-shadow:none}
-.hidden{display:none!important}
-.card{width:min(94vw,440px);max-height:94vh;overflow:auto;padding:26px 24px;border-radius:22px;
-  background:#0e2015ee;border:1px solid #ffffff22;box-shadow:0 20px 70px #000a;text-align:center;color:#eaf5ec}
-.card h1{margin:0 0 4px;font-size:30px;letter-spacing:.04em}
-.card h2{margin:0 0 14px;font-size:22px;letter-spacing:.06em}
-.card p{margin:0 0 16px;color:#b7d3bd;font-size:14px;line-height:1.45}
-.bar{height:6px;border-radius:99px;background:#ffffff18;overflow:hidden;margin:0 0 16px}
-.bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,#4fae63,#b6e88e);transition:width .25s}
-button.primary,button.secondary{display:block;width:100%;padding:14px 16px;margin:0 0 10px;border-radius:14px;
-  font-size:15px;font-weight:700;letter-spacing:.05em;cursor:pointer;font-family:inherit}
-button.primary{border:0;background:linear-gradient(180deg,#78d388,#3f9a58);color:#052010}
-button.primary:disabled{opacity:.5;cursor:default}
-button.secondary{border:1px solid #ffffff30;background:#ffffff0f;color:#eaf5ec}
-button.primary:active:not(:disabled),button.secondary:active{transform:scale(.985)}
-.hints{margin:14px 0 0;padding:0;list-style:none;color:#9fbfa6;font-size:12px;line-height:1.7}
-.row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:12px 2px;font-size:13px;color:#cfe5d3;text-align:left}
-.row input[type=range]{flex:1;accent-color:#7fd18a;min-width:0}
-.row label{display:flex;align-items:center;gap:6px;cursor:pointer}
-.row input[type=checkbox]{accent-color:#7fd18a;width:17px;height:17px}
-.err{color:#ffb4a8}
-@media(max-width:520px){
-  .pill{padding:9px 11px;font-size:11px}
-  .btn{width:38px;height:38px;font-size:15px}
-  .top{gap:6px}
-  .title .full{display:none}
-  .joy{width:150px;height:150px}
-  .knob{width:62px;height:62px;margin:-31px}
-}
-@media(max-height:430px){.tip{display:none}.card{padding:16px}.card h1{font-size:24px}}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div id="game"></div>
@@ -102,12 +17,13 @@ button.primary:active:not(:disabled),button.secondary:active{transform:scale(.98
   <div class="top">
     <div class="pill title">🌲<span class="full"> FOREST EXPLORER</span></div>
     <div class="grow"></div>
+    <button class="btn journalBtn" id="btnJournal" aria-label="Open field journal" title="Field journal">📖 <span class="journalCount" id="journalCount">0/4</span></button>
     <div class="pill" id="compass">🧭 N</div>
     <div class="pill" id="time">☀️ DAYLIGHT</div>
     <button class="btn" id="btnSound" aria-label="Toggle sound">🔊</button>
     <button class="btn" id="btnPause" aria-label="Pause">⏸</button>
   </div>
-  <div class="pill tip" id="tip">Follow the dirt path to find a campfire and a pond</div>
+  <div class="pill tip" id="tip">Explore the forest and collect 4 field notes</div>
   <div class="cross"></div>
   <div class="help">WASD / ARROWS MOVE • SHIFT RUN • DRAG OR MOUSE TO LOOK • ESC PAUSE</div>
 </div>
@@ -115,6 +31,18 @@ button.primary:active:not(:disabled),button.secondary:active{transform:scale(.98
 <div class="controls" id="controls">
   <div class="joy" id="joy"><div class="knob" id="knob"></div></div>
   <button class="run" id="run" aria-label="Hold to run">RUN</button>
+</div>
+
+<div class="interactPrompt hidden" id="interactPrompt"><span class="interactName" id="interactName">✦ Something catches your eye</span><button class="interactAction" id="btnInteract" type="button">EXAMINE · E</button></div>
+<div class="toast" id="toast" aria-live="polite"></div>
+
+<div class="overlay hidden" id="journalOverlay">
+  <div class="card">
+    <div class="journalHead"><h2>FIELD JOURNAL</h2><button id="btnJournalClose" aria-label="Close journal">✕</button></div>
+    <p id="journalProgress" class="journalProgress">0 of 4 field notes discovered</p>
+    <div class="bar"><i id="journalBarFill" style="width:0%"></i></div>
+    <div class="journalBody" id="journalBody"></div>
+  </div>
 </div>
 
 <div class="overlay" id="start">
@@ -128,7 +56,7 @@ button.primary:active:not(:disabled),button.secondary:active{transform:scale(.98
       <li class="only-desk">Click, then move the mouse to look • Esc to pause</li>
       <li class="only-touch">Left joystick to walk • hold RUN to run</li>
       <li class="only-touch">Drag anywhere else to look around</li>
-      <li>Follow the dirt path to find a campfire and a pond</li>
+      <li>Explore the forest and collect 4 field notes</li>
     </ul>
   </div>
 </div>
@@ -144,7 +72,15 @@ button.primary:active:not(:disabled),button.secondary:active{transform:scale(.98
   </div>
 </div>
 
-<!-- Three.js r160 is bundled in /vendor so the game works offline and without a CDN. -->
+<!-- Game engine and modules load from local files in this project folder; no CDN is used. -->
+
+
+
+
+
+
+
+<!-- Local game engine and modules. Keep this order: dependencies first. -->
 <script src="vendor/three.min.js"></script>
 <script src="js/util.js"></script>
 <script src="js/env.js"></script>
