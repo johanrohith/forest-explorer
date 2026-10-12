@@ -48,6 +48,8 @@ Forest Explorer is designed for a quieter kind of game: one focused on atmospher
 
 The browser loads the local game engine and JavaScript modules for the forest, environment, sound, and main game loop. Players explore with keyboard and mouse controls or mobile touch controls, and can record discoveries in the field journal. The project runs as a static web experience without a separate application backend.
 
+---
+
 <p align="center">
   <strong>Forest Explorer</strong><br>
   <em>Follow the trail. Find what the forest hides.</em><br>
