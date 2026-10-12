@@ -40,12 +40,6 @@ A quiet, first-person journey through a living forest. Wander winding trails, wa
 
 ---
 
-<p align="center">
-  <strong>Forest Explorer</strong><br>
-  <em>Follow the trail. Find what the forest hides.</em><br>
-  <sub>Made by Johan Rohith</sub>
-</p>
-
 ## Why Forest Explorer?
 
 Forest Explorer is designed for a quieter kind of game: one focused on atmosphere, curiosity, and discovery rather than combat or score-chasing. The goal is to give players a small world to wander through, notice details, and explore at their own pace.
@@ -54,3 +48,8 @@ Forest Explorer is designed for a quieter kind of game: one focused on atmospher
 
 The browser loads the local game engine and JavaScript modules for the forest, environment, sound, and main game loop. Players explore with keyboard and mouse controls or mobile touch controls, and can record discoveries in the field journal. The project runs as a static web experience without a separate application backend.
 
+<p align="center">
+  <strong>Forest Explorer</strong><br>
+  <em>Follow the trail. Find what the forest hides.</em><br>
+  <sub>Made by Johan Rohith</sub>
+</p>
