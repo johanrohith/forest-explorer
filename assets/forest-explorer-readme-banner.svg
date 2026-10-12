@@ -79,17 +79,17 @@
     </g>
   </g>
   <style>
-    /* Only the light and small flame contours move; the fire never slides around. */
-    .fireGlow { transform-origin: 850px 347px; animation: glow 4s ease-in-out infinite; }
-    .flame { transform-origin: 850px 341px; animation: flicker 1.8s ease-in-out infinite alternate; }
+    /* Fire stays fixed: animation changes opacity only, never position, scale, or rotation. */
+    .fireGlow { animation: glow 4s ease-in-out infinite; }
+    .flame { animation: flicker 1.8s ease-in-out infinite alternate; }
     .sparks { animation: sparks 3.4s ease-in-out infinite; }
     .mist { animation: drift 22s ease-in-out infinite alternate; }
     .mist2 { animation: drift 28s ease-in-out infinite alternate-reverse; }
     .star { animation: twinkle 4.5s ease-in-out infinite; }
     .s2 { animation-delay: -1.9s; }
     .s3 { animation-delay: -3s; }
-    @keyframes glow { 0%,100% { opacity:.78; transform:scale(.98); } 50% { opacity:1; transform:scale(1.025); } }
-    @keyframes flicker { 0% { transform:scaleX(.98) scaleY(1); } 45% { transform:scaleX(1.02) scaleY(1.04); } 100% { transform:scaleX(.97) scaleY(.98); } }
+    @keyframes glow { 0%,100% { opacity:.72; } 50% { opacity:1; } } 50% { opacity:1; transform:scale(1.025); } }
+    @keyframes flicker { 0%,100% { opacity:.92; } 50% { opacity:1; } } 45% { transform:scaleX(1.02) scaleY(1.04); } 100% { transform:scaleX(.97) scaleY(.98); } }
     @keyframes sparks { 0%,100% { opacity:.4; } 40% { opacity:.8; } 70% { opacity:.25; } }
     @keyframes drift { from { transform:translateX(-5px); opacity:.6; } to { transform:translateX(5px); opacity:.85; } }
     @keyframes twinkle { 0%,100% { opacity:.45; } 50% { opacity:1; } }
