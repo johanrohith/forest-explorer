@@ -1,22 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="title desc">
   <title id="title">Forest Explorer</title>
-  <desc id="desc">A quiet moonlit forest with a winding trail and gently flickering campfire.</desc>
+  <desc id="desc">A calm moonlit forest banner with a gently glowing, naturally flickering campfire.</desc>
   <defs>
     <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#061a19"/><stop offset=".52" stop-color="#12382c"/><stop offset="1" stop-color="#284c38"/>
+      <stop offset="0" stop-color="#061a19"/><stop offset=".55" stop-color="#12382c"/><stop offset="1" stop-color="#284c38"/>
     </linearGradient>
-    <linearGradient id="hills" x1="0" y1="0" x2="0" y2="1">
-      <stop stop-color="#27513c"/><stop offset="1" stop-color="#0d2a22"/>
+    <linearGradient id="ridge" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#2b543d"/><stop offset="1" stop-color="#102c22"/>
     </linearGradient>
     <linearGradient id="trail" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#d0b77e" stop-opacity=".7"/><stop offset="1" stop-color="#b6a16e" stop-opacity=".06"/>
+      <stop stop-color="#c8a66b" stop-opacity=".72"/><stop offset="1" stop-color="#b6a16e" stop-opacity=".04"/>
     </linearGradient>
-    <radialGradient id="glow">
-      <stop stop-color="#ffd982" stop-opacity=".72"/><stop offset=".42" stop-color="#f18b3e" stop-opacity=".28"/><stop offset="1" stop-color="#f18b3e" stop-opacity="0"/>
+    <radialGradient id="firelight">
+      <stop stop-color="#ffc86d" stop-opacity=".55"/><stop offset=".48" stop-color="#f18b3e" stop-opacity=".2"/><stop offset="1" stop-color="#f18b3e" stop-opacity="0"/>
     </radialGradient>
-    <linearGradient id="titleColor" x1="0" y1="0" x2="1" y2="0">
-      <stop stop-color="#f4f4e7"/><stop offset="1" stop-color="#c4e2b8"/>
-    </linearGradient>
     <g id="pine">
       <path d="M0 0-30 45h16L-39 82h20L-48 120H48L19 82h20L14 45h16Z" fill="currentColor"/>
       <path d="M-3 112h6v25h-6z" fill="#49382a"/>
@@ -30,10 +27,10 @@
   <g clip-path="url(#clip)">
     <rect width="1200" height="420" fill="url(#sky)"/>
     <circle cx="923" cy="91" r="53" fill="#d8e8c8" opacity=".07"/>
-    <circle cx="923" cy="91" r="35" fill="#e4edcf" opacity=".86"/>
+    <circle cx="923" cy="91" r="35" fill="#e4edcf" opacity=".9"/>
     <path d="M0 170Q180 105 340 178T680 157T1200 130V420H0Z" fill="#183c2e"/>
     <path d="M0 228Q190 176 380 222T760 210T1200 187V420H0Z" fill="#24503a"/>
-    <path d="M0 274Q180 230 360 267T760 249T1200 236V420H0Z" fill="url(#hills)"/>
+    <path d="M0 274Q180 230 360 267T760 249T1200 236V420H0Z" fill="url(#ridge)"/>
     <path d="M0 310Q190 270 370 310T730 293T1200 277V420H0Z" fill="#102f25"/>
     <g fill="#dcebd3">
       <circle cx="760" cy="55" r="1.7" class="star"/><circle cx="1015" cy="49" r="1.4" class="star s2"/>
@@ -46,26 +43,26 @@
     </g>
     <path d="M595 420q42-67 99-98t110-56q44-21 78-55h104q-46 49-87 74t-77 49q-42 29-62 86Z" fill="url(#trail)" opacity=".9"/>
     <path d="M0 356Q170 327 320 360T630 349T920 343T1200 330V420H0Z" fill="#091e19"/>
-    <!-- Forest framing -->
-    <use href="#pine" x="35" y="105" transform="translate(35 105) scale(1.45) translate(-35 -105)" color="#09231c"/>
-    <use href="#pine" x="100" y="178" transform="translate(100 178) scale(1.12) translate(-100 -178)" color="#0d2c21"/>
-    <use href="#smallPine" x="185" y="203" transform="translate(185 203) scale(1.04) translate(-185 -203)" color="#123a29"/>
-    <use href="#pine" x="280" y="224" transform="translate(280 224) scale(.86) translate(-280 -224)" color="#17422e"/>
-    <use href="#smallPine" x="365" y="239" transform="translate(365 239) scale(.72) translate(-365 -239)" color="#1c4932"/>
-    <use href="#pine" x="1125" y="80" transform="translate(1125 80) scale(1.55) translate(-1125 -80)" color="#082219"/>
-    <use href="#pine" x="1190" y="163" transform="translate(1190 163) scale(1.26) translate(-1190 -163)" color="#0d2a20"/>
-    <use href="#smallPine" x="1055" y="183" transform="translate(1055 183) scale(1.13) translate(-1055 -183)" color="#143a29"/>
-    <use href="#pine" x="1000" y="228" transform="translate(1000 228) scale(.9) translate(-1000 -228)" color="#19412f"/>
-    <!-- Warm pool of light and animated fire -->
-    <ellipse cx="850" cy="347" rx="170" ry="79" fill="url(#glow)" class="fireGlow"/>
-    <g transform="translate(850 330)">
-      <path d="M-22 14 21-8M-20-7 20 14" stroke="#4b3628" stroke-width="8" stroke-linecap="round"/>
+    <use href="#pine" transform="translate(45 85) scale(1.5)" color="#09231c"/>
+    <use href="#pine" transform="translate(100 178) scale(1.12)" color="#0d2c21"/>
+    <use href="#smallPine" transform="translate(185 203) scale(1.04)" color="#123a29"/>
+    <use href="#pine" transform="translate(280 224) scale(.86)" color="#17422e"/>
+    <use href="#smallPine" transform="translate(365 239) scale(.72)" color="#1c4932"/>
+    <use href="#pine" transform="translate(1125 80) scale(1.55)" color="#082219"/>
+    <use href="#pine" transform="translate(1190 163) scale(1.26)" color="#0d2a20"/>
+    <use href="#smallPine" transform="translate(1055 183) scale(1.13)" color="#143a29"/>
+    <use href="#pine" transform="translate(1000 228) scale(.9)" color="#19412f"/>
+    <!-- Firelight pulses softly; the campfire itself stays grounded. -->
+    <ellipse cx="850" cy="347" rx="145" ry="72" fill="url(#firelight)" class="fireGlow"/>
+    <g transform="translate(850 341)">
+      <ellipse cx="0" cy="12" rx="27" ry="7" fill="#1a2118" opacity=".6"/>
+      <path d="M-22 9 22-8M-20-8 20 10" stroke="#493629" stroke-width="7" stroke-linecap="round"/>
       <g class="flame">
-        <path d="M0 5C-20-9-8-24-3-35C7-22 17-14 8 2C18-7 22-17 21-23C43 1 17 21 0 15C-19 20-33 3-18-13C-17-2-10 4 0 5Z" fill="#f18a3c"/>
-        <path d="M1 8C-10-2-2-14 2-19C7-8 14-5 8 5C16 0 16-4 16-7C27 9 10 18 1 14C-7 15-12 8-6 2C-5 7-2 8 1 8Z" fill="#ffd477"/>
+        <path d="M0 5C-11-4-9-15-3-26C0-19 7-13 7-7C13-12 15-18 13-22C28-4 17 13 3 14C-11 15-20 4-14-7C-12-1-7 4 0 5Z" fill="#f18a3c"/>
+        <path d="M1 8C-5 2-3-6 1-12C3-7 8-4 7 1C11-3 11-6 10-8C18 3 10 11 2 12C-4 12-8 7-5 2C-4 6-1 8 1 8Z" fill="#ffd477"/>
       </g>
-      <g class="embers" fill="#ffc56a">
-        <circle cx="-27" cy="-28" r="2"/><circle cx="27" cy="-36" r="1.6"/><circle cx="14" cy="-47" r="1.4"/>
+      <g class="sparks" fill="#ffc56a">
+        <circle cx="-19" cy="-22" r="1.4"/><circle cx="20" cy="-31" r="1.2"/><circle cx="8" cy="-39" r="1"/>
       </g>
     </g>
     <g fill="#10271e" opacity=".92">
@@ -74,30 +71,30 @@
     <g fill="#496d43" opacity=".65">
       <path d="M30 420l18-36 6 36 17-25 4 25M160 420l12-28 8 28 15-18 3 18M1030 420l16-31 7 31 15-21 6 21M1140 420l15-38 8 38"/>
     </g>
-    <!-- Minimal title area: title and tagline only -->
     <g transform="translate(76 100)">
       <rect width="5" height="170" rx="2.5" fill="#8bd19a"/>
-      <text x="29" y="82" fill="url(#titleColor)" font-family="Arial, Helvetica, sans-serif" font-size="59" font-weight="800" letter-spacing="1.5">FOREST</text>
-      <text x="29" y="143" fill="url(#titleColor)" font-family="Arial, Helvetica, sans-serif" font-size="59" font-weight="800" letter-spacing="1.5">EXPLORER</text>
+      <text x="29" y="82" fill="#f4f4e7" font-family="Arial, Helvetica, sans-serif" font-size="59" font-weight="800" letter-spacing="1.5">FOREST</text>
+      <text x="29" y="143" fill="#c4e2b8" font-family="Arial, Helvetica, sans-serif" font-size="59" font-weight="800" letter-spacing="1.5">EXPLORER</text>
       <text x="31" y="178" fill="#c4d9c0" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="500" letter-spacing=".2">Follow the trail. Find what the forest hides.</text>
     </g>
   </g>
   <style>
-    .fireGlow { transform-origin: 850px 347px; animation: glow 3.1s ease-in-out infinite; }
-    .flame { transform-origin: 850px 330px; animation: flicker 1.25s ease-in-out infinite alternate; }
-    .embers { animation: emberLift 2.8s ease-in-out infinite; }
-    .mist { animation: drift 16s ease-in-out infinite alternate; }
-    .mist2 { animation: drift 21s ease-in-out infinite alternate-reverse; }
-    .star { animation: twinkle 3.8s ease-in-out infinite; }
-    .s2 { animation-delay: -1.7s; }
-    .s3 { animation-delay: -2.6s; }
-    @keyframes glow { 0%,100% { opacity:.78; transform:scale(.96); } 50% { opacity:1; transform:scale(1.05); } }
-    @keyframes flicker { 0% { transform:scale(.96,1.02) rotate(-1deg); } 100% { transform:scale(1.04,.96) rotate(1deg); } }
-    @keyframes emberLift { 0%,100% { opacity:.45; transform:translateY(0); } 60% { opacity:1; transform:translateY(-8px); } }
-    @keyframes drift { from { transform:translateX(-12px); opacity:.6; } to { transform:translateX(14px); opacity:1; } }
-    @keyframes twinkle { 0%,100% { opacity:.35; } 50% { opacity:1; } }
+    /* Only the light and small flame contours move; the fire never slides around. */
+    .fireGlow { transform-origin: 850px 347px; animation: glow 4s ease-in-out infinite; }
+    .flame { transform-origin: 850px 341px; animation: flicker 1.8s ease-in-out infinite alternate; }
+    .sparks { animation: sparks 3.4s ease-in-out infinite; }
+    .mist { animation: drift 22s ease-in-out infinite alternate; }
+    .mist2 { animation: drift 28s ease-in-out infinite alternate-reverse; }
+    .star { animation: twinkle 4.5s ease-in-out infinite; }
+    .s2 { animation-delay: -1.9s; }
+    .s3 { animation-delay: -3s; }
+    @keyframes glow { 0%,100% { opacity:.78; transform:scale(.98); } 50% { opacity:1; transform:scale(1.025); } }
+    @keyframes flicker { 0% { transform:scaleX(.98) scaleY(1); } 45% { transform:scaleX(1.02) scaleY(1.04); } 100% { transform:scaleX(.97) scaleY(.98); } }
+    @keyframes sparks { 0%,100% { opacity:.4; } 40% { opacity:.8; } 70% { opacity:.25; } }
+    @keyframes drift { from { transform:translateX(-5px); opacity:.6; } to { transform:translateX(5px); opacity:.85; } }
+    @keyframes twinkle { 0%,100% { opacity:.45; } 50% { opacity:1; } }
     @media (prefers-reduced-motion: reduce) {
-      .fireGlow,.flame,.embers,.mist,.mist2,.star { animation:none; }
+      .fireGlow,.flame,.sparks,.mist,.mist2,.star { animation:none; }
     }
   </style>
 </svg>
