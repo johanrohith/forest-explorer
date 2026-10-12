@@ -18,17 +18,6 @@ A quiet, first-person journey through a living forest. Wander winding trails, wa
 - **Quick settings** — Pause, restart, adjust the time of day, and toggle sound or shadows.
 - **Touch controls** — Use a virtual joystick and on-screen controls on mobile devices.
 
-## Controls
-
-| Action | Desktop | Mobile |
-| --- | --- | --- |
-| Move | `W` `A` `S` `D` or arrow keys | Left virtual joystick |
-| Run | Hold `Shift` | Hold **RUN** |
-| Look around | Mouse movement or drag | Drag the gameplay view |
-| Examine a discovery | `E` or on-screen button | On-screen **EXAMINE** button |
-| Open field journal | `J` or journal button | Journal button |
-| Pause / resume | `Esc` or pause button | Pause button |
-
 ## Tech Stack
 
 <p align="center">
@@ -39,6 +28,17 @@ A quiet, first-person journey through a living forest. Wander winding trails, wa
 </p>
 
 ---
+
+## Controls
+
+| Action | Desktop | Mobile |
+| --- | --- | --- |
+| Move | `W` `A` `S` `D` or arrow keys | Left virtual joystick |
+| Run | Hold `Shift` | Hold **RUN** |
+| Look around | Mouse movement or drag | Drag the gameplay view |
+| Examine a discovery | `E` or on-screen button | On-screen **EXAMINE** button |
+| Open field journal | `J` or journal button | Journal button |
+| Pause / resume | `Esc` or pause button | Pause button |
 
 ## Why Forest Explorer?
 
