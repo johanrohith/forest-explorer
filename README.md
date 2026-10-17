@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/forest-explorer-readme-bannr.svg" alt="Forest Explorer — Follow the trail. Find what the forest hides." width="100%">
+  <img src="assets/forest-explorer-readme-banner.svg" alt="Forest Explorer — Follow the trail. Find what the forest hides." width="100%">
 </p>
 
 A quiet, first-person journey through a living forest. Wander winding trails, watch the light change, listen to the forest, and record discoveries along the way.
