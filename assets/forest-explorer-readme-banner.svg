@@ -22,9 +22,11 @@
     </style>
     <!-- Small overlays animate only the existing campfire; the artwork underneath is untouched. -->
     <ellipse class="ember-motion" cx="1494" cy="466" rx="48" ry="17" fill="#ff9c3b" opacity=".3"/>
-    <g class="flame-motion" transform="translate(1470 422)">
+    <g transform="translate(1470 422)">
+      <g class="flame-motion">
       <path d="M18 43 C7 34 13 23 19 15 C18 25 27 27 27 34 C35 25 34 17 31 8 C44 22 45 34 36 43 Z" fill="#ff8b32" opacity=".62"/>
       <path d="M22 43 C16 36 21 29 25 24 C25 32 32 34 31 39 C35 33 35 29 34 26 C42 36 37 43 31 45 Z" fill="#ffe49a" opacity=".72"/>
+      </g>
     </g>
   </g>
 </svg>
